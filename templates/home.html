@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+{%block main-content%}
+{%for category in categ%}
+<div class="btn-group" role="group" aria-label="Basic mixed styles example">
+    <a href="{%url 'filter' category.uid%}"class="btn btn-danger">{{category.cat}}</a>
+    
+</div>
+{%endfor%}
+<div class ="container mt-5 mx auto col-md-8 card shadow p-5"> 
+<div class="row mx-auto">   
+    {%for values in obj1%}
+<div class="card mx-auto mb-3" style="width: 18rem;">
+    <img src="{{values.pizza_image.url}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h5 class="card-title">{{values.pizza_name}}</h5>
+      <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+  
+        <input hidden value={{values.uid}} name="prod_id"> </input>
+        <a href="{%url 'addtocart' values.uid%}" class="btn btn-primary">At To Cart</button>
+     
+      <a href="#" class="btn btn-primary">20$ Discount</a>
+    </div>
+  </div>
+{%endfor%}  
+</div>
+</div>
+{%endblock main-content%}

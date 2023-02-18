@@ -1,0 +1,65 @@
+{% extends 'base.html' %}
+{%block main-content%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+<h1> Your Cart :</h1>
+<div class ="container mt-5 mx auto col-md-8 card shadow p-5"> 
+<table class="table">
+    <thead>
+      <tr>
+        <th scope="col">SR.No</th>
+        <th scope="col"></th>
+        <th scope="col">Product Name</th>
+        <th scope="col">Qty</th>
+        <th scope="col">Price</th>
+        <th scope="col">Total</th>
+        <th scope="col">Remove</th>
+      </tr>
+    </thead>
+    {%if carts%}
+    <tbody>
+        {%for cart in carts.cart_item.all%}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+        <td><img src="/upload/{{cart.pizza.pizza_image}}" style="height:40px;width:40px"></td>
+        <td>{{cart.pizza.pizza_name}}</td>
+        <td>{{cart.pizza.pizza_price}}</td>
+        <td>Otto</td>
+        <td>@mdo</td>
+        <th>
+        <a href={%url 'deleteitem' cart.uid%} class="btn btn-danger"><i class="fa-regular fa-trash-xmark">Remove</i></a>
+        <th>
+    </tr>
+    {%endfor%}
+    <tr>
+        <th scope="row"></th>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        
+   
+      <td>
+        <b>Grand Total</b>
+        
+        <p>{{total}}
+        </p>
+      </td>   
+        <td >
+        <a class="btn btn-primary" href={{payment_url}}>Buy Now</a</p>
+      </td>
+    </tr>  
+    
+    
+    </tbody>
+    {%else%}
+    <td></td>
+    <td></td>
+    <td></td>
+    <td class="container mt-5 mx auto col-md-8 card shadow p-1">
+      <a class="">{{Empty}}</a</p>
+    </td>
+    {%endif%}
+  </table>
+</div>
+{% endblock main-content%}

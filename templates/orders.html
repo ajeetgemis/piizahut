@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+<h1 class="center"> Dashboard :</h1>
+{%block main-content%}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.3.0/css/all.min.css" integrity="sha512-SzlrxWUlpfuzQ+pcUCosxcglQRNAq/DZjVsC0lE40xsADsfeQoEypE+enwcOiGjk/bSuGGKHEyjSoQ1zVisanQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+   
+
+<div class ="container mt-3 mx auto col-md-8 card shadow p-6"> 
+<table class="table table-dark" >
+    <thead>
+      <tr>
+        <th scope="col">SR.No</th>        
+        <th scope="col">Order_id</th>
+        <th scope="col">Total price</th>
+        <th scope="col">Payment</th>
+       
+      </tr>
+    </thead>
+    <tbody>
+        {%for cart in orders%}
+      <tr>
+        <th scope="row">{{forloop.counter}}</th>
+      <td>{{cart.uid}}</td>
+        <td>600</td>
+        <td>True</td>
+        
+    
+    {%endfor%}
+ 
+    
+    
+    </tbody>
+  </table>
+</div>
+{% endblock main-content%}

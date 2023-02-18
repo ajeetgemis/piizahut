@@ -1,0 +1,25 @@
+{% extends 'base.html' %}
+{%block main-content%}
+ 
+    
+    <div class ="container mt-5 mx auto col-md-8 card shadow p-5"> 
+        
+        <div class="row mx-auto">   
+            {%for orderlist in orders%}  
+        <div class="card mx-5 mb-3" style="width: 18rem;">
+        <div class="card-body">
+      <h5 class="card-title">Order {{forloop.counter}}</h5>
+      <h6 class="card-subtitle mb-2 text-muted">Cart Id:{{orderlist.uid}}</h6>
+      <h6 class="card-text">Order_id:{{orderlist.payment_id}}</h6>
+      <p class="card-text">Payment Id:{{orderlist.payment_request_id}}</p>
+      <p class="card-text">Order Date:{{orderlist.created_at}}</p>
+      <a href="#" class="card-link">See Details...</a>
+      <a href="#" class="card-link">Print</a>
+    </div>
+</div>
+    {%endfor%}
+  </div>
+  
+
+</td>
+  {%endblock%}  
