@@ -7,12 +7,14 @@ from instamojo_wrapper import Instamojo
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import datetime
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 # Create your views here.
 api = Instamojo(api_key=settings.API_KEY,
                 auth_token=settings.API_AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
 print(api)
-
+@login_required(login_url="/login")
 def success(request):
     if request.method=='GET':
         insert_this=request.GET.get('payment_id')
@@ -24,6 +26,7 @@ def success(request):
 
      
     return render(request,'success.html')
+@login_required(login_url="/login")
 def process_payment(request):
     response = api.payment_request_create(
     amount='3499',
@@ -32,6 +35,20 @@ def process_payment(request):
     email="cssanand@gemis.in",
     redirect_url="http://127.0.0.1/success"
     )
+@login_required(login_url="/login")
+def order_api(request):
+    mainlist=[]
+    cart=Cart.objects.filter(is_paid=True)
+    for items in cart:
+        dict1={}
+        dict1['user']=items.user.username
+        dict1['is_paid']=items.is_paid
+        dict1['payment_id']=items.payment_id
+        dict1['request_payment_id']=items.payment_request_id
+    mainlist.append(dict1)
+    print(dict1)   
+    return JsonResponse(mainlist,safe=False)
+@login_required(login_url="/login")
 def orders_list(request):
     print(request.user)
     order_items=Cart.objects.filter(is_paid=True,user=request.user)
@@ -39,6 +56,7 @@ def orders_list(request):
     context={'orders':order_items}
     
     return render(request,'tests.html',context)
+@login_required(login_url="/login")
 def cart(request):
     try:
         cart=Cart.objects.filter(is_paid=False,user=request.user)[0]
@@ -65,6 +83,7 @@ def cart(request):
     print("id",id)
     cart.save()
     return render(request,'cart.html',{'carts':cart,'total':total,'payment_url':response['payment_request']['longurl']})
+@login_required(login_url="/login")
 def add_to_cart(request,uid):
     user=request.user
     print(user)
@@ -73,6 +92,7 @@ def add_to_cart(request,uid):
     print(cart)
     Cart_items.objects.create(cart=cart,pizza=pizza_obj)
     return redirect('home')
+@login_required(login_url="/login")
 def delete_item(request,uid):
     print(uid)
     Cart_items.objects.get(uid=uid).delete()
