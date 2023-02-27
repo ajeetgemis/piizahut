@@ -48,6 +48,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+   # 'pizza.middleware.middle',
 ]
 
 ROOT_URLCONF = 'piizahut.urls'
@@ -130,3 +131,4 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 API_KEY="test_db142fc70d3e4b9127b3e058e2b"
 API_AUTH_TOKEN="test_152c995fb3f04c26133ef53a042"
 PRIVATE_SALT="b1bceb100377434e965ceeeb8de35521"
+#SESSION_COOKIE_AGE=20
