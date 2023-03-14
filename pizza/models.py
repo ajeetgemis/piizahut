@@ -6,7 +6,7 @@ import uuid
 choice2=('Veg','Veg'),('Non-Veg','Non-Veg')
 choices=(('S','small'),('M','medium'),('L','large'),('XL','Xtra large'),('XXL','Double X large'))
 class Baseclass(models.Model):
-    uid=models.UUIDField(primary_key=True,editable=False,default=uuid.uuid4)
+    uuid=models.UUIDField(primary_key=True,editable=False,default=uuid.uuid4)
     created_at=models.DateTimeField(auto_now_add=True)
     updated_at=models.DateTimeField(auto_now_add=True)
 
