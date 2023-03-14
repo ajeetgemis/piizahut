@@ -34,4 +34,19 @@ class Cart(Baseclass):
         return Cart_items.objects.filter(cart=self).aggregate(sum('pizza__pizza_price'))['pizza_pizza_price__sum']
 class Cart_items(Baseclass):
     cart=models.ForeignKey(Cart,on_delete=models.CASCADE,related_name="cart_item")
-    pizza=models.ForeignKey(Pizza,on_delete=models.CASCADE)    
+    pizza=models.ForeignKey(Pizza,on_delete=models.CASCADE) 
+
+class faker_test(models.Model):
+    name=models.CharField(max_length=100)
+
+    def __str__(self):
+        return self.name       
+
+class enqury(models.Model):
+    email=models.CharField(max_length=50)
+    username=models.CharField(max_length=50)
+    phonenumber=models.CharField(max_length=50)
+    message=models.TextField(max_length=300)
+
+    def __str__(self):
+        return self.email        

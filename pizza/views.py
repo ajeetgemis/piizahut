@@ -2,18 +2,38 @@ from django.shortcuts import render,redirect,HttpResponseRedirect
 from django.contrib.auth.models import User
 from django.contrib import messages
 from django.contrib.auth import login,authenticate,logout
-from .models import Pizza,Pizzacategory,Cart,Cart_items
+from .models import Pizza,Pizzacategory,Cart,Cart_items,faker_test
 from instamojo_wrapper import Instamojo
 from django.conf import settings
 from django.views.decorators.csrf import csrf_exempt
 import datetime
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-
+from faker import Faker
+from django.db.models import Sum
+from django.views.generic.list import ListView
+from django.views.generic.edit import CreateView
+from .forms import enquryform
+from .models import enqury
+fake=Faker
 # Create your views here.
 api = Instamojo(api_key=settings.API_KEY,
                 auth_token=settings.API_AUTH_TOKEN, endpoint='https://test.instamojo.com/api/1.1/')
 print(api)
+
+
+class createView(CreateView):
+    model=enqury
+    fields=['email','username','phonenumber','message']
+    success_url="/footer"
+class genericview(ListView):
+    model=Pizza
+    #default template render location=model name/modelsnam_list.html
+    #default context=modelname_list.html
+    template_name='pizza_list.html'#custom template rendering
+    context_object_name='pizza_detail'#custom context for template
+
+
 @login_required(login_url="/login")
 def success(request):
     if request.method=='GET':
@@ -65,7 +85,12 @@ def cart(request):
 
 
     total=0
+    tt=Cart_items.objects.filter(cart=cart).aggregate(Sum('pizza__pizza_price'))
+    print(tt['pizza__pizza_price__sum'])
     cartitems=cart.cart_item.all()
+    
+
+    
     for item in cartitems:
         price=item.pizza.pizza_price
         total=total+price
@@ -149,7 +174,11 @@ def home(request,data=None):
 def signin(request):
     if request.method=='POST':
         username=request.POST.get('username')
-        print(username)
+        #request.session['name']=username
+        #name=request.session['name']
+        
+
+        #print(name)
         password=request.POST.get('password')
         auth=authenticate(username=username,password=password)
         if auth is not None:
@@ -158,8 +187,14 @@ def signin(request):
                 login(request,auth)
                 request.session['customer_id']=username
                 #request.session['customer_email']=cust.email
-                print("you are:",request.session.get('customer_id'))
+                cusid=request.session.get('customer_id')
+                if cusid:
+
+                    request.session.modified=True
                 #messages.success(request,"Success Login")
+                else:
+                    return redirect('/home')
+
                 return redirect('/home')
             #return render(request,'home.html')
 
@@ -183,3 +218,22 @@ def register(request):
             cuser.save()   
             return redirect('/login')
     return render(request,'register.html')    
+
+
+def facker_fun(n):
+    fake=Faker()
+    for i in range(0,n):
+        print(fake.name)
+        faker_test.objects.create(name=fake.name)
+
+def footer(request):
+    if request.method=="POST":
+        form=enquryform(request.POST)
+        if form.is_valid:
+            form.cleaned_data['email']
+            form.cleaned_data['username']
+            form.cleaned_data['phonenumber']
+            form.cleaned_data['message']
+
+    form=enquryform()
+    return render(request,'footer.html',{'form':form})
